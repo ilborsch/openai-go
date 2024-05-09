@@ -19,7 +19,7 @@ func main() {
 	// 3. Create runs for the messages
 	// 4. Pool for the assistant response
 
-	// Id addition, strongly recommend to get familiar with this example before:
+	// In addition, strongly recommend to get familiar with this example before:
 	// https://github.com/ilborsch/openai-go/blob/main/examples/run-thread.go
 
 	APIKey := "your api key"
