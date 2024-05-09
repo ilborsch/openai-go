@@ -35,5 +35,5 @@ func main() {
 	}
 
 	fmt.Println(runID)
-
+	// Output: run_asldjaieocsmrlr
 }
