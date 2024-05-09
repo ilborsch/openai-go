@@ -19,24 +19,31 @@ const (
 	StatusExpired        = "expired"
 )
 
+// Runs represents OpenAI API run domain
 type Runs struct {
 	APIKey string
 }
 
+// CreateRunRequest is used to structure payload in the Create function
 type CreateRunRequest struct {
 	AssistantID string `json:"assistant_id"`
 }
 
+// CreateRunResponse is used to unmarshal OpenAI API response
 type CreateRunResponse struct {
 	RunID string `json:"id"`
 }
 
+// GetRunResponse is used to structure payload in the GetRun function
 type GetRunResponse struct {
 	Status      string `json:"status"`
 	ThreadID    string `json:"thread_id"`
 	AssistantID string `json:"assistant_id"`
 }
 
+// Create creates run object for an assistant with the `assistantID` in the thread specified by `threadID`.
+// Returns its ID.
+// Recommended docs to better understand this approach: https://platform.openai.com/docs/assistants/overview
 func (r Runs) Create(threadID string, assistantID string) (string, error) {
 	URL := fmt.Sprintf("https://api.openai.com/v1/threads/%s/runs", threadID)
 
@@ -79,6 +86,7 @@ func (r Runs) Create(threadID string, assistantID string) (string, error) {
 	return response.RunID, nil
 }
 
+// GetRun fetches run object given by `runID` parameter.
 func (r Runs) GetRun(threadID, runID string) (GetRunResponse, error) {
 	URL := fmt.Sprintf("https://api.openai.com/v1/threads/%s/runs/%s", threadID, runID)
 

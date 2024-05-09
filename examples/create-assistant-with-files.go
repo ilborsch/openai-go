@@ -47,14 +47,15 @@ func main() {
 		"AI Tutor", // name
 		"You are an AI tutor. Be polite and friendly!", // instructions
 		vectorStoreID, // vector store ID
+		nil,           // tools
+
 		//[]assistants.Tool{
 		//	{
 		//		Type: assistants.ToolFileSearch,
 		//	},
 		//},
-		nil, // tools
+		// alternatively you could specify tools like so... But... Really???
 	)
-
 	// file search tool is specified by default
 	// therefore, for the sake of simplicity we can leave this argument as nil
 

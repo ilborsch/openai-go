@@ -7,14 +7,18 @@ import (
 	"net/http"
 )
 
+// Threads represents OpenAI API thread domain
 type Threads struct {
 	APIKey string
 }
 
+// CreateThreadResponse is used to unmarshal OpenAI API response
 type CreateThreadResponse struct {
 	ThreadID string `json:"id"`
 }
 
+// Create creates an empty thread object.
+// Returns its ID
 func (t Threads) Create() (string, error) {
 	const URL = "https://api.openai.com/v1/threads"
 
@@ -47,5 +51,4 @@ func (t Threads) Create() (string, error) {
 		return "", err
 	}
 	return response.ThreadID, nil
-
 }

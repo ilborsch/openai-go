@@ -8,22 +8,29 @@ import (
 	"net/http"
 )
 
+// VectorStores represents OpenAI API vector store domain
 type VectorStores struct {
 	APIKey string
 }
 
+// CreateVectorStoreResponse is used to unmarshal OpenAI API response in Create function
 type CreateVectorStoreResponse struct {
 	ID string `json:"id"`
 }
 
+// File is used to unmarshal OpenAI API response in GetFiles function
 type File struct {
 	FileID string `json:"id"`
 }
 
+// GetVectorStoreFilesResponse is used to unmarshal OpenAI API response in GetFiles function
 type GetVectorStoreFilesResponse struct {
 	Files []File `json:"data"`
 }
 
+// Create creates a vector store for files that later can be attached to an assistant.
+// It is a new feature of assistants v2 API so I sincerely recommend to jump through this docs:
+// https://platform.openai.com/docs/api-reference/vector-stores/object
 func (v VectorStores) Create(storeName string) (string, error) {
 	URL := "https://api.openai.com/v1/vector_stores"
 	payload := fmt.Sprintf(`{"name": "%s"}`, storeName)
@@ -60,6 +67,7 @@ func (v VectorStores) Create(storeName string) (string, error) {
 	return response.ID, nil
 }
 
+// Delete deletes the Vector Store object specified by `storeID` from OpenAI platform.
 func (v VectorStores) Delete(storeID string) error {
 	URL := fmt.Sprintf("https://api.openai.com/v1/vector_stores/%s", storeID)
 	req, err := http.NewRequest("DELETE", URL, nil)
@@ -119,6 +127,7 @@ func (v VectorStores) AddFile(storeID, fileID string) error {
 	return nil
 }
 
+// GetFiles returns a list of Files stored in the Vector Store object specified by `storeID` as a struct GetVectorStoreFilesResponse
 func (v VectorStores) GetFiles(storeID string) (GetVectorStoreFilesResponse, error) {
 	URL := fmt.Sprintf("https://api.openai.com/v1/vector_stores/%s/files", storeID)
 
@@ -154,6 +163,7 @@ func (v VectorStores) GetFiles(storeID string) (GetVectorStoreFilesResponse, err
 	return filesResponse, nil
 }
 
+// DeleteFile is used to delete a file from a Vector Store object specified by `storeID`
 func (v VectorStores) DeleteFile(storeID, fileID string) error {
 	URL := fmt.Sprintf("https://api.openai.com/v1/vector_stores/%s/files/%s", storeID, fileID)
 

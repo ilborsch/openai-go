@@ -18,6 +18,10 @@ const (
 	ToolCodeInterpreter = "code_interpreter"
 )
 
+// Assistants represents OpenAI API assistant domain and combines all subdomains.
+// The subdomains may be accessed by full composition relation ( f.e. `OpenAI.Assistants.VectorStores.Create(...)` ),
+// or alternatively by shortened syntax ( f.e. `OpenAI.VectorStores.Create(...)` ).
+// Both examples do absolutely the same, it's just a syntax sugar from Go language.
 type Assistants struct {
 	APIKey string
 	vecstores.VectorStores
@@ -26,6 +30,7 @@ type Assistants struct {
 	threads.Threads
 }
 
+// CreateAssistantRequest is used to unmarshal OpenAI API response in the Create function
 type CreateAssistantRequest struct {
 	Instructions  string `json:"instructions"`
 	Name          string `json:"name"`
@@ -34,22 +39,27 @@ type CreateAssistantRequest struct {
 	ToolResources `json:"tool_resources"`
 }
 
+// ToolResources is used to marshal a payload for the Create function
 type ToolResources struct {
 	FileSearch VectorStoreIDs `json:"file_search"`
 }
 
+// VectorStoreIDs is used to marshal a payload for the Create function
 type VectorStoreIDs struct {
 	IDs []string `json:"vector_store_ids"`
 }
 
+// Tool is used to marshal a payload for the Create function
 type Tool struct {
 	Type string `json:"type"`
 }
 
+// CreateAssistantResponse is used to unmarshal OpenAI API response in the Create function
 type CreateAssistantResponse struct {
 	AssistantID string `json:"id"`
 }
 
+// GetAssistantResponse is used to unmarshal OpenAI API response in the GetAssistant function
 type GetAssistantResponse struct {
 	Name         string  `json:"name"`
 	Model        string  `json:"model"`
@@ -58,6 +68,8 @@ type GetAssistantResponse struct {
 	Temperature  float32 `json:"temperature"`
 }
 
+// Create creates an assistant with name, instructions, tools and a Vector Store specified by vectorStoreID.
+// Argument `tools` may be passed as a `nil`. In this case ToolFileSearch will be used as a default
 func (a Assistants) Create(name, instructions, vectorStoreID string, tools []Tool) (string, error) {
 	const URL = "https://api.openai.com/v1/assistants"
 
@@ -113,6 +125,7 @@ func (a Assistants) Create(name, instructions, vectorStoreID string, tools []Too
 	return response.AssistantID, nil
 }
 
+// GetAssistant gets assistant information by its ID
 func (a Assistants) GetAssistant(ID string) (GetAssistantResponse, error) {
 	URL := "https://api.openai.com/v1/assistants/" + ID
 	request, err := http.NewRequest(http.MethodGet, URL, nil)
@@ -150,6 +163,8 @@ func (a Assistants) GetAssistant(ID string) (GetAssistantResponse, error) {
 	return response, nil
 }
 
+// Modify updates assistant information.
+// Arguments that are left blank will not be modified
 func (a Assistants) Modify(assistantID, newInstructions, newModel string, newTemperature float32) error {
 	URL := "https://api.openai.com/v1/assistants/" + assistantID
 
@@ -191,6 +206,7 @@ func (a Assistants) Modify(assistantID, newInstructions, newModel string, newTem
 	return nil
 }
 
+// Delete removes assistant from OpenAI portal by its ID.
 func (a Assistants) Delete(ID string) error {
 	req, err := http.NewRequest("DELETE", "https://api.openai.com/v1/assistants/"+ID, nil)
 	if err != nil {

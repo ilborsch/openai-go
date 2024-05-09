@@ -10,14 +10,18 @@ import (
 	"path/filepath"
 )
 
+// Files represents OpenAI API files domain
 type Files struct {
 	APIKey string
 }
 
+// UploadFileResponse is used to unmarshal OpenAI API response in the UploadFile function
 type UploadFileResponse struct {
 	ID string `json:"id"`
 }
 
+// UploadFile uploads file with `filename` and binary data `fileData` into OpenAI portal
+// where can be later used by an assistant
 func (f Files) UploadFile(filename string, fileData []byte) (string, error) {
 	const URL = "https://api.openai.com/v1/files"
 
@@ -64,6 +68,7 @@ func (f Files) UploadFile(filename string, fileData []byte) (string, error) {
 	return response.ID, nil
 }
 
+// DeleteFile deletes file object specified by `fileID` from OpenAI portal
 func (f Files) DeleteFile(fileID string) error {
 	URL := "https://api.openai.com/v1/files/" + fileID
 	req, err := http.NewRequest(http.MethodDelete, URL, nil)

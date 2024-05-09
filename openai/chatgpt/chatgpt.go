@@ -9,30 +9,37 @@ import (
 	"net/http"
 )
 
-const DefaultModel = "gpt-3.5-turbo"
+const (
+	DefaultModel  = "gpt-3.5-turbo"
+	RoleAssistant = "assistant"
+)
 
 type ChatGPT struct {
 	APIKey string
 	Model  string
 }
 
+// CreateCompletionRequest is used to create a payload in the CreateCompletion function
 type CreateCompletionRequest struct {
 	Model    string            `json:"model"`
 	Messages []message.Message `json:"messages"`
 }
 
+// CompletionChoice is used to unmarshal OpenAI API response in the CreateCompletion function
 type CompletionChoice struct {
 	Index   int `json:"index"`
 	Message `json:"message"`
 }
 
+// CreateCompletionResponse is used to unmarshal OpenAI API response in the CreateCompletion function
+type CreateCompletionResponse struct {
+	Choices []CompletionChoice `json:"choices"`
+}
+
+// Message is used to unmarshal OpenAI API response in the CreateCompletion function
 type Message struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
-}
-
-type CreateCompletionResponse struct {
-	Choices []CompletionChoice `json:"choices"`
 }
 
 func (c ChatGPT) CreateCompletion(chatStory []message.Message) (string, error) {
