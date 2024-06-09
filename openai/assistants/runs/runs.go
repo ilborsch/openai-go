@@ -20,7 +20,7 @@ const (
 )
 
 type RunClient interface {
-	Create(threadID string, assistantID string) (string, error)
+	CreateRun(threadID string, assistantID string) (string, error)
 	GetRun(threadID, runID string) (GetRunResponse, error)
 }
 
@@ -46,10 +46,10 @@ type GetRunResponse struct {
 	AssistantID string `json:"assistant_id"`
 }
 
-// Create creates run object for an assistant with the `assistantID` in the thread specified by `threadID`.
+// CreateRun creates run object for an assistant with the `assistantID` in the thread specified by `threadID`.
 // Returns its ID.
 // Recommended docs to better understand this approach: https://platform.openai.com/docs/assistants/overview
-func (r Runs) Create(threadID string, assistantID string) (string, error) {
+func (r Runs) CreateRun(threadID string, assistantID string) (string, error) {
 	URL := fmt.Sprintf("https://api.openai.com/v1/threads/%s/runs", threadID)
 
 	payload := CreateRunRequest{

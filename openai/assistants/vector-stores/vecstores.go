@@ -9,7 +9,7 @@ import (
 )
 
 type VectorStoreClient interface {
-	Create(storeName string) (string, error)
+	CreateVectorStore(storeName string) (string, error)
 	Delete(storeID string) error
 	AddFile(storeID, fileID string) error
 	GetFiles(storeID string) (GetVectorStoreFilesResponse, error)
@@ -36,10 +36,10 @@ type GetVectorStoreFilesResponse struct {
 	Files []File `json:"data"`
 }
 
-// Create creates a vector store for files that later can be attached to an assistant.
+// CreateVectorStore creates a vector store for files that later can be attached to an assistant.
 // It is a new feature of assistants v2 API so I sincerely recommend to jump through this docs:
 // https://platform.openai.com/docs/api-reference/vector-stores/object
-func (v VectorStores) Create(storeName string) (string, error) {
+func (v VectorStores) CreateVectorStore(storeName string) (string, error) {
 	URL := "https://api.openai.com/v1/vector_stores"
 	payload := fmt.Sprintf(`{"name": "%s"}`, storeName)
 	requestBody := bytes.NewBuffer([]byte(payload))

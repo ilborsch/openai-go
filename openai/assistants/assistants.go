@@ -19,12 +19,15 @@ const (
 )
 
 type AssistantClient interface {
-	Create(name, instructions, vectorStoreID string, tools []Tool) (string, error)
+	CreateAssistant(name, instructions, vectorStoreID string, tools []Tool) (string, error)
 	GetAssistant(ID string) (GetAssistantResponse, error)
 	Modify(assistantID, newInstructions, newModel string, newTemperature float32) error
 	Delete(ID string) error
+	vecstores.VectorStoreClient
+	messages.MessageClient
+	runs.RunClient
+	threads.ThreadClient
 }
-
 
 // Assistants represents OpenAI API assistant domain and combines all subdomains.
 // The subdomains may be accessed by full composition relation ( f.e. `OpenAI.Assistants.VectorStores.Create(...)` ),
@@ -76,9 +79,9 @@ type GetAssistantResponse struct {
 	Temperature  float32 `json:"temperature"`
 }
 
-// Create creates an assistant with name, instructions, tools and a Vector Store specified by vectorStoreID.
+// CreateAssistant creates an assistant with name, instructions, tools and a Vector Store specified by vectorStoreID.
 // Argument `tools` may be passed as a `nil`. In this case ToolFileSearch will be used as a default
-func (a Assistants) Create(name, instructions, vectorStoreID string, tools []Tool) (string, error) {
+func (a Assistants) CreateAssistant(name, instructions, vectorStoreID string, tools []Tool) (string, error) {
 	const URL = "https://api.openai.com/v1/assistants"
 
 	assistantConfig := CreateAssistantRequest{

@@ -8,7 +8,7 @@ import (
 )
 
 type ThreadClient interface {
-	Create() (string, error)
+	CreateThread() (string, error)
 }
 
 // Threads represents OpenAI API thread domain
@@ -21,9 +21,9 @@ type CreateThreadResponse struct {
 	ThreadID string `json:"id"`
 }
 
-// Create creates an empty thread object.
+// CreateThread creates an empty thread object.
 // Returns its ID
-func (t Threads) Create() (string, error) {
+func (t Threads) CreateThread() (string, error) {
 	const URL = "https://api.openai.com/v1/threads"
 
 	request, err := http.NewRequest(http.MethodPost, URL, nil)
