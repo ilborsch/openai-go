@@ -22,7 +22,7 @@ type AssistantClient interface {
 	CreateAssistant(name, instructions, vectorStoreID string, tools []Tool) (string, error)
 	GetAssistant(ID string) (GetAssistantResponse, error)
 	Modify(assistantID, newInstructions, newModel string, newTemperature float32) error
-	Delete(ID string) error
+	DeleteAssistant(ID string) error
 	vecstores.VectorStoreClient
 	messages.MessageClient
 	runs.RunClient
@@ -217,8 +217,8 @@ func (a Assistants) Modify(assistantID, newInstructions, newModel string, newTem
 	return nil
 }
 
-// Delete removes assistant from OpenAI portal by its ID.
-func (a Assistants) Delete(ID string) error {
+// DeleteAssistant removes assistant from OpenAI portal by its ID.
+func (a Assistants) DeleteAssistant(ID string) error {
 	req, err := http.NewRequest("DELETE", "https://api.openai.com/v1/assistants/"+ID, nil)
 	if err != nil {
 		return err
