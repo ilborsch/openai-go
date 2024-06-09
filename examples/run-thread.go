@@ -18,18 +18,18 @@ func main() {
 	// initialize client
 	client := openai.New(APIKey)
 
-	threadID, err := client.Threads.Create()
+	threadID, err := client.CreateThread()
 	if err != nil {
 		// handle error
 	}
 
 	userPrompt := "Hi! What can you do?"
-	err = client.Messages.AddMessageToThread(threadID, userPrompt)
+	err = client.AddMessageToThread(threadID, userPrompt)
 	if err != nil {
 		// handle error
 	}
 
-	runID, err := client.Runs.Create(threadID, assistantID)
+	runID, err := client.CreateRun(threadID, assistantID)
 	if err != nil {
 		// handle error :)
 	}

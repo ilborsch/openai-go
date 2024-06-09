@@ -21,7 +21,6 @@ See [examples/](https://github.com/ilborsch/openai-go/tree/main/examples) for a 
 **As easy as:**
 
 ```go
-
 package main
 
 import (
@@ -36,21 +35,23 @@ func main() {
 	client := openai.New(APIKey)
 
 	// create a store for assistant files
-	vsID, err := client.Assistants.VectorStores.Create("Crypto scam data storage")
-	if err != nil {}
+	vsID, err := client.CreateVectorStore("Crypto scam data storage")
+	if err != nil {
+	}
 
 	// create an assistant
-	assistantID, err := client.Assistants.Create(
+	assistantID, err := client.CreateAssistant(
 		"My New Assistant!",       // name
 		"Be polite and friendly!", // instructions
 		vsID,                      // vector store ID
-		nil,                       // tools to use (file-search by default)
+		nil,                       // tools to use (file search is default)
 	)
-	if err != nil {}
-	
-	fmt.Println(assistantID) 
-	// Output: asst_jLkZWgH4uio1zM0HoW2MXbL
+	if err != nil {
+	}
+	fmt.Println("My assistant ID: " + assistantID)
+	// Output: "My assistant ID: asst_jLkZWgH4uio1zM0HoW2MXbL"
 }
+
 
 ```
 

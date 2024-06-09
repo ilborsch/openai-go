@@ -29,7 +29,7 @@ func main() {
 	client := openai.New(APIKey)
 
 	// create a thread
-	threadID, err := client.Threads.Create()
+	threadID, err := client.CreateThread()
 	if err != nil {
 		// handler error
 	}
@@ -55,7 +55,7 @@ func main() {
 		}
 
 		// create a run for the message
-		runID, err := client.Runs.Create(threadID, assistantID)
+		runID, err := client.CreateRun(threadID, assistantID)
 		if err != nil {
 			// handle error (f.e. wrong assistantID, threadID or connection error)
 		}
@@ -88,7 +88,7 @@ func getAssistantResponse(
 	// start pooling
 	for {
 		// get current run status
-		run, err := client.Assistants.Runs.GetRun(threadID, runID)
+		run, err := client.GetRun(threadID, runID)
 		if err != nil {
 			// handle error, for example:
 			responseChan <- err.Error()
@@ -104,7 +104,7 @@ func getAssistantResponse(
 			// We developed handy function to extract latest assistant response from a list of thread messages
 			// in one API call
 			// so you don't need to go into details of OpenAI REST API data structure...
-			assistantResponse, err := client.Messages.LatestAssistantResponse(threadID)
+			assistantResponse, err := client.LatestAssistantResponse(threadID)
 			if err != nil {
 				// handle error
 			}

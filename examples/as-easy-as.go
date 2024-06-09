@@ -12,12 +12,12 @@ func main() {
 	client := openai.New(APIKey)
 
 	// create a store for assistant files
-	vsID, err := client.Assistants.VectorStores.Create("Crypto scam data storage")
+	vsID, err := client.CreateVectorStore("Crypto scam data storage")
 	if err != nil {
 	}
 
 	// create an assistant
-	assistantID, err := client.Assistants.Create(
+	assistantID, err := client.CreateAssistant(
 		"My New Assistant!",       // name
 		"Be polite and friendly!", // instructions
 		vsID,                      // vector store ID

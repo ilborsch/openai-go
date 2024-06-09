@@ -19,7 +19,7 @@ func main() {
 	client := openai.New(APIKey)
 
 	// create a vector store
-	vectorStoreID, err := client.Assistants.VectorStores.Create("Crypto scam guides storage")
+	vectorStoreID, err := client.CreateVectorStore("Crypto scam guides storage")
 	// or alternatively (thanks to Go syntax sugar)
 	// vectorStoreID, err := client.VectorStores.Create(...)
 	if err != nil {
@@ -31,19 +31,19 @@ func main() {
 	fileData, _ := io.ReadAll(file)
 
 	// upload the file to OpenAI portal, you can reference it later within OpenAI by fileID
-	fileID, err := client.Files.UploadFile(fileName, fileData)
+	fileID, err := client.UploadFile(fileName, fileData)
 	if err != nil {
 		// handle error
 	}
 
 	// attach file to the vector store you created before
-	err = client.VectorStores.AddFile(vectorStoreID, fileID)
+	err = client.AddVectorStoreFile(vectorStoreID, fileID)
 	if err != nil {
 		// handle error
 	}
 
 	// create an assistant
-	assistantID, err := client.Assistants.Create(
+	assistantID, err := client.CreateAssistant(
 		"AI Tutor", // name
 		"You are an AI tutor. Be polite and friendly!", // instructions
 		vectorStoreID, // vector store ID
