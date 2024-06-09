@@ -8,6 +8,14 @@ import (
 	"net/http"
 )
 
+type VectorStoreClient interface {
+	Create(storeName string) (string, error)
+	Delete(storeID string) error
+	AddFile(storeID, fileID string) error
+	GetFiles(storeID string) (GetVectorStoreFilesResponse, error)
+	DeleteFile(storeID, fileID string) error
+}
+
 // VectorStores represents OpenAI API vector store domain
 type VectorStores struct {
 	APIKey string
@@ -96,6 +104,7 @@ func (v VectorStores) Delete(storeID string) error {
 	return nil
 }
 
+// AddFile adds a file with `fileID` to the Vector Store object specified by `storeID` from OpenAI platform.
 func (v VectorStores) AddFile(storeID, fileID string) error {
 	URL := fmt.Sprintf("https://api.openai.com/v1/vector_stores/%s/files", storeID)
 	jsonData := fmt.Sprintf(`{"file_id": "%s"}`, fileID)

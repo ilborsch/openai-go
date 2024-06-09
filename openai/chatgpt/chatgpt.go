@@ -10,9 +10,12 @@ import (
 )
 
 const (
-	DefaultModel  = "gpt-3.5-turbo"
-	RoleAssistant = "assistant"
+	DefaultModel = "gpt-3.5-turbo"
 )
+
+type ChatGPTClient interface {
+	CreateCompletion(chatStory []message.Message) (string, error)
+}
 
 type ChatGPT struct {
 	APIKey string

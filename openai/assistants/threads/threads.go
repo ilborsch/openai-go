@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+type ThreadClient interface {
+	Create() (string, error)
+}
+
 // Threads represents OpenAI API thread domain
 type Threads struct {
 	APIKey string

@@ -13,6 +13,12 @@ const (
 	RoleAssistant = "assistant"
 )
 
+type MessageClient interface {
+	AddMessageToThread(threadID string, message string) error
+	GetThreadMessages(threadID string) (ThreadMessages, error)
+	LatestAssistantResponse(threadID string) (string, error)
+}
+
 // Messages represents OpenAI API thread message domain
 type Messages struct {
 	APIKey string

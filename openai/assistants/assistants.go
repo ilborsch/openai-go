@@ -18,16 +18,24 @@ const (
 	ToolCodeInterpreter = "code_interpreter"
 )
 
+type AssistantClient interface {
+	Create(name, instructions, vectorStoreID string, tools []Tool) (string, error)
+	GetAssistant(ID string) (GetAssistantResponse, error)
+	Modify(assistantID, newInstructions, newModel string, newTemperature float32) error
+	Delete(ID string) error
+}
+
+
 // Assistants represents OpenAI API assistant domain and combines all subdomains.
 // The subdomains may be accessed by full composition relation ( f.e. `OpenAI.Assistants.VectorStores.Create(...)` ),
 // or alternatively by shortened syntax ( f.e. `OpenAI.VectorStores.Create(...)` ).
 // Both examples do absolutely the same, it's just a syntax sugar from Go language.
 type Assistants struct {
 	APIKey string
-	vecstores.VectorStores
-	messages.Messages
-	runs.Runs
-	threads.Threads
+	vecstores.VectorStoreClient
+	messages.MessageClient
+	runs.RunClient
+	threads.ThreadClient
 }
 
 // CreateAssistantRequest is used to unmarshal OpenAI API response in the Create function

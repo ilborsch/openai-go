@@ -17,9 +17,9 @@ import (
 // Both examples do absolutely the same, it's just a syntax sugar from Go language.
 type OpenAI struct {
 	apiKey string
-	chatgpt.ChatGPT
-	files.Files
-	assistants.Assistants
+	chatgpt.ChatGPTClient
+	files.FileClient
+	assistants.AssistantClient
 }
 
 // New initializes a new OpenAI instance and returns it
@@ -29,25 +29,25 @@ func New(apiKey string) *OpenAI {
 	}
 	return &OpenAI{
 		apiKey: apiKey,
-		ChatGPT: chatgpt.ChatGPT{
+		ChatGPTClient: chatgpt.ChatGPT{
 			APIKey: apiKey,
 			Model:  chatgpt.DefaultModel,
 		},
-		Files: files.Files{
+		FileClient: files.Files{
 			APIKey: apiKey,
 		},
-		Assistants: assistants.Assistants{
+		AssistantClient: assistants.Assistants{
 			APIKey: apiKey,
-			VectorStores: vecstores.VectorStores{
+			VectorStoreClient: vecstores.VectorStores{
 				APIKey: apiKey,
 			},
-			Messages: messages.Messages{
+			MessageClient: messages.Messages{
 				APIKey: apiKey,
 			},
-			Runs: runs.Runs{
+			RunClient: runs.Runs{
 				APIKey: apiKey,
 			},
-			Threads: threads.Threads{
+			ThreadClient: threads.Threads{
 				APIKey: apiKey,
 			},
 		},

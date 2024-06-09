@@ -19,6 +19,11 @@ const (
 	StatusExpired        = "expired"
 )
 
+type RunClient interface {
+	Create(threadID string, assistantID string) (string, error)
+	GetRun(threadID, runID string) (GetRunResponse, error)
+}
+
 // Runs represents OpenAI API run domain
 type Runs struct {
 	APIKey string

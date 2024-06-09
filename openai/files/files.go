@@ -10,6 +10,12 @@ import (
 	"path/filepath"
 )
 
+
+type FileClient interface {
+	UploadFile(filename string, fileData []byte) (string, error)
+	DeleteFile(fileID string) error
+}
+
 // Files represents OpenAI API files domain
 type Files struct {
 	APIKey string
