@@ -10,6 +10,12 @@ import (
 	"github.com/ilborsch/openai-go/openai/files"
 )
 
+type OpenAIClient interface {
+	chatgpt.ChatGPTClient
+	files.FileClient
+	assistants.AssistantClient
+}
+
 // OpenAI is a main client and centre of user interaction with the openai-go library.
 // Combines all subdomains which may be accessed by full composition relation
 // ( f.e. `OpenAI.Assistants.VectorStores.Create(...)` ),
