@@ -29,11 +29,11 @@ type OpenAI struct {
 }
 
 // New initializes a new OpenAI instance and returns it
-func New(apiKey string) *OpenAI {
+func New(apiKey string) OpenAIClient {
 	if apiKey == "" {
 		panic("api key cannot be empty")
 	}
-	return &OpenAI{
+	return OpenAI{
 		apiKey: apiKey,
 		ChatGPTClient: chatgpt.ChatGPT{
 			APIKey: apiKey,
